@@ -10,6 +10,7 @@
     } while(0)
 #endif
 
+
 #ifndef CCDBG_PLATFORM_DIAG
 #define CCDBG_PLATFORM_DIAG(x) do {printf x;} while(0)
 #endif
