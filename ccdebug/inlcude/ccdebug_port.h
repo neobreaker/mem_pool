@@ -3,7 +3,6 @@
 
 #include "stm32f10x.h"
 
-//∫Í∂®“Â
 #ifndef CCDBG_PLATFORM_ASSERT
 #define CCDBG_PLATFORM_ASSERT(x) \
     do \
