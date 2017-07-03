@@ -27,6 +27,7 @@ typedef struct
 mem_err_t mem_pool_init(mem_dev_t* mem_dev, char* mem_base, u32 mem_base_size, u32 block_size);
 void * mem_pool_alloc(mem_dev_t* mem_dev, u32 num_byte);
 void * mem_pool_malloc(mem_dev_t* mem_dev, u32 num_byte);
+void * mem_pool_calloc(mem_dev_t* mem_dev, u32 n, u32 size);
 void mem_pool_memset(char *p, char c, u32 num_byte);
 void mem_pool_free(mem_dev_t *mem_dev, char *p);
 void mem_pool_print_tbl(mem_dev_t *mem_dev);
