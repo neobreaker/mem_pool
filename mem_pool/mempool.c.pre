@@ -1,0 +1,260 @@
+#include "mempool.h"
+#include "ccdebug.h"
+
+mem_err_t mem_pool_init(mem_dev_t* mem_dev, char* mem_base, u32 mem_base_bytes, u32 block_bytes, tbl_width_t tbl_width)
+{
+    u32 valid_block_num = 0;
+
+    CC_ASSERT("[MEM_POOL]:  mem_base_bytes % block_bytes == 0 ", mem_base_bytes % block_bytes == 0);
+
+    mem_dev->mem_base       = (u8*)mem_base;
+    mem_dev->mem_base_bytes = mem_base_bytes;
+    mem_dev->block_bytes    = block_bytes;
+    mem_dev->mem_block_num  = mem_base_bytes / block_bytes;
+    mem_dev->tbl_width      = tbl_width;
+    mem_dev->tbl_bytes      = mem_dev->mem_block_num * mem_dev->tbl_width;
+
+    mem_dev->tbl_block_num = mem_dev->tbl_bytes / block_bytes;
+    if(mem_dev->tbl_bytes % block_bytes)
+        mem_dev->tbl_block_num++;
+
+    mem_pool_memset((char*)mem_dev->mem_base, 0x00, mem_dev->mem_base_bytes);
+    valid_block_num = mem_dev->mem_block_num - mem_dev->tbl_block_num;
+    switch(mem_dev->tbl_width)
+    {
+        case TBL_W8:
+            mem_dev->mem_tbl.tbl_w8  = (u8*)(mem_base + valid_block_num*block_bytes);
+            mem_pool_memset((char*)mem_dev->mem_tbl.tbl_w8+mem_dev->tbl_bytes-mem_dev->tbl_block_num*tbl_width,     \
+                            0xff, mem_dev->tbl_block_num*tbl_width);
+            break;
+        case TBL_W16:
+            mem_dev->mem_tbl.tbl_w16 = (u16*)(mem_base + valid_block_num*block_bytes);
+            mem_pool_memset((char*)mem_dev->mem_tbl.tbl_w16+mem_dev->tbl_bytes-mem_dev->tbl_block_num*tbl_width,    \
+                            0xff, mem_dev->tbl_block_num*tbl_width);
+            break;
+        case TBL_W32:
+            mem_dev->mem_tbl.tbl_w32 = (u32*)(mem_base + valid_block_num*block_bytes);
+            mem_pool_memset((char*)mem_dev->mem_tbl.tbl_w32+mem_dev->tbl_bytes-mem_dev->tbl_block_num*tbl_width,    \
+                            0xff, mem_dev->tbl_block_num*tbl_width);
+            break;
+        default:
+            break;
+    }
+//    mem_dev->mem_tbl         = (u8*)(mem_base + valid_block_num*block_size);
+    mem_dev->mem_valid_size = valid_block_num * block_bytes;
+    mem_dev->mem_free_size  = mem_dev->mem_valid_size;
+
+
+    return mem_err_OK;
+}
+
+void * mem_pool_malloc(mem_dev_t* mem_dev, u32 num_byte)
+{
+    return mem_pool_alloc(mem_dev, num_byte);
+}
+
+void * mem_pool_calloc(mem_dev_t* mem_dev, u32 n, u32 size)
+{
+    return mem_pool_alloc(mem_dev, n*size);
+}
+
+void mem_pool_memset(char *p, char c, u32 num_byte)
+{
+    u32 i = 0;
+    for(i = 0; i < num_byte; ++i)
+    {
+        *(p+i) = c;
+    }
+}
+
+void mem_pool_free(mem_dev_t *mem_dev, char *p)
+{
+    if(p == NULL)
+        return;
+    switch(mem_dev->tbl_width)
+    {
+        case TBL_W8:
+            mem_reset_tbl_8(mem_dev, p);
+        case TBL_W16:
+            mem_reset_tbl_16(mem_dev, p);
+        case TBL_W32:
+            mem_reset_tbl_32(mem_dev, p);
+    }
+}
+
+void mem_pool_print_tbl(mem_dev_t *mem_dev)
+{
+    u32 i = 0;
+
+    for(i = 0; i < mem_dev->tbl_bytes; i++)
+    {
+//      CC_DEBUGF(CC_DBG_LEVEL_WARNING, ("%"U32_F" ", mem_dev->mem_tbl[i]));
+//        CCDBG_PLATFORM_DIAG(("%d:0x%x ", i, mem_dev->mem_tbl[i]));
+    }
+}
+
+float mem_pool_utilization(mem_dev_t *mem_dev)
+{
+    return (1.0)*(mem_dev->mem_free_size)/(mem_dev->mem_base_bytes);
+}
+
+
+static void * mem_pool_alloc(mem_dev_t* mem_dev, u32 num_byte)
+{
+    u32 num_block = 0;
+
+    if(num_byte == 0 || num_byte > mem_dev->mem_free_size)
+        return NULL;
+
+    num_block = num_byte/mem_dev->block_bytes;
+    if(num_byte%mem_dev->block_bytes)
+        num_block++;
+
+    switch(mem_dev->tbl_width)
+    {
+        case TBL_W8:
+            return mem_set_tbl_8(mem_dev, num_block);
+        case TBL_W16:
+            return mem_set_tbl_16(mem_dev, num_block);
+        case TBL_W32:
+            return mem_set_tbl_32(mem_dev, num_block);
+    }
+
+    return NULL;
+}
+
+static void* mem_set_tbl_8(mem_dev_t *mem_dev, u32 num_block)
+{
+    signed long long offset = 0;
+    u32 i = 0, n = 0;
+
+    for(offset = mem_dev->mem_block_num-1; offset >=0; offset--)
+    {
+        if(!mem_dev->mem_tbl.tbl_w8[offset])
+            n++;
+        else
+            n = 0;
+        if(n == num_block)
+        {
+            for(i = 0; i < num_block; i++)
+            {
+                mem_dev->mem_tbl.tbl_w8[offset+i] = num_block;
+            }
+            mem_dev->mem_free_size -= num_block*mem_dev->block_bytes;
+            return mem_dev->mem_base + offset*mem_dev->block_bytes;
+        }
+    }
+    return NULL;
+}
+
+static void* mem_set_tbl_16(mem_dev_t *mem_dev, u32 num_block)
+{
+    signed long long offset = 0;
+    u32 i = 0, n = 0;
+
+    for(offset = mem_dev->mem_block_num-1; offset >=0; offset--)
+    {
+        if(!mem_dev->mem_tbl.tbl_w16[offset])
+            n++;
+        else
+            n = 0;
+        if(n == num_block)
+        {
+            for(i = 0; i < num_block; i++)
+            {
+                mem_dev->mem_tbl.tbl_w16[offset+i] = num_block;
+            }
+            mem_dev->mem_free_size -= num_block*mem_dev->block_bytes;
+            return mem_dev->mem_base + offset*mem_dev->block_bytes;
+        }
+    }
+    return NULL;
+}
+
+static void* mem_set_tbl_32(mem_dev_t *mem_dev, u32 num_block)
+{
+	signed long long offset = 0;
+    u32 i = 0, n = 0;
+
+    for(offset = mem_dev->mem_block_num-1; offset >=0; offset--)
+    {
+        if(!mem_dev->mem_tbl.tbl_w32[offset])
+            n++;
+        else
+            n = 0;
+        if(n == num_block)
+        {
+            for(i = 0; i < num_block; i++)
+            {
+                mem_dev->mem_tbl.tbl_w32[offset+i] = num_block;
+            }
+            mem_dev->mem_free_size -= num_block*mem_dev->block_bytes;
+            return mem_dev->mem_base + offset*mem_dev->block_bytes;
+        }
+    }
+    return NULL;
+}
+
+static void mem_reset_tbl_8(mem_dev_t *mem_dev, char *p)
+{
+    u32 offset = 0;
+    u32 i = 0;
+    u32 tbl_offset = 0;
+    u32 num_block = 0;
+
+    offset =  (u32)p - (u32)(mem_dev->mem_base);
+    if(offset < mem_dev->mem_valid_size)
+    {
+        tbl_offset = offset/mem_dev->block_bytes;
+        num_block = mem_dev->mem_tbl.tbl_w8[tbl_offset];
+        for(i =0; i < num_block; ++i)
+        {
+            mem_dev->mem_tbl.tbl_w8[tbl_offset+i] = 0;
+        }
+        mem_dev->mem_free_size += num_block*mem_dev->block_bytes;
+    }
+
+}
+
+static void mem_reset_tbl_16(mem_dev_t *mem_dev, char *p)
+{
+    u32 offset = 0;
+    u32 i = 0;
+    u32 tbl_offset = 0;
+    u32 num_block = 0;
+
+    offset =  (u32)p - (u32)(mem_dev->mem_base);
+    if(offset < mem_dev->mem_valid_size)
+    {
+        tbl_offset = offset/mem_dev->block_bytes;
+        num_block = mem_dev->mem_tbl.tbl_w16[tbl_offset];
+        for(i =0; i < num_block; ++i)
+        {
+            mem_dev->mem_tbl.tbl_w16[tbl_offset+i] = 0;
+        }
+        mem_dev->mem_free_size += num_block*mem_dev->block_bytes;
+    }
+}
+
+static void mem_reset_tbl_32(mem_dev_t *mem_dev, char *p)
+{
+
+    u32 offset = 0;
+    u32 i = 0;
+    u32 tbl_offset = 0;
+    u32 num_block = 0;
+
+    offset =  (u32)p - (u32)(mem_dev->mem_base);
+    if(offset < mem_dev->mem_valid_size)
+    {
+        tbl_offset = offset/mem_dev->block_bytes;
+        num_block = mem_dev->mem_tbl.tbl_w16[tbl_offset];
+        for(i =0; i < num_block; ++i)
+        {
+            mem_dev->mem_tbl.tbl_w16[tbl_offset+i] = 0;
+        }
+        mem_dev->mem_free_size += num_block*mem_dev->block_bytes;
+    }
+}
+
+

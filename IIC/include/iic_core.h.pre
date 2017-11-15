@@ -1,0 +1,52 @@
+#ifndef __IIC_CORE_H__
+#define __IIC_CORE_H__
+
+typedef void (*handle_t)(void);
+typedef char (*rd_sda_handle_t)(void);
+typedef char (*iic_delay_us_handle_t)(unsigned int);
+
+typedef struct
+{
+	handle_t port_init;
+	handle_t sda_in;
+	handle_t sda_out;
+	handle_t scl_high;
+	handle_t scl_low;
+	handle_t sda_high;
+	handle_t sda_low;
+	rd_sda_handle_t read_sda;
+	iic_delay_us_handle_t delay_us;
+}IIC_port;
+
+typedef void (*handle2_t)(IIC_port*);
+typedef unsigned char (*iic_wait_ack_handle)(IIC_port*); 
+typedef void (*iic_send_byte_handle)(IIC_port*, unsigned char);
+typedef unsigned char (*iic_read_byte_handle)(IIC_port*, unsigned char);
+
+typedef struct
+{
+	IIC_port port;
+	handle2_t iic_init;
+	handle2_t iic_start;
+	handle2_t iic_stop;
+	handle2_t iic_ack;
+	handle2_t iic_nack;
+	iic_wait_ack_handle iic_wait_ack;
+	iic_send_byte_handle iic_send_byte;
+	iic_read_byte_handle iic_read_byte;
+	
+}IIC_bus;
+
+static void iic_init(IIC_port *port);
+static void iic_start(IIC_port *port);
+static void iic_stop(IIC_port *port);
+static unsigned char iic_wait_ack(IIC_port *port);
+static void iic_ack(IIC_port *port);
+static void iic_nack(IIC_port *port);
+static void iic_send_byte(IIC_port *port, unsigned char txd);
+static unsigned char iic_read_byte(IIC_port *port, unsigned char ack);
+
+
+
+#endif
+
