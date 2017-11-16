@@ -65,11 +65,20 @@ void mem_test()
     printf("heap remain size : %d\r", heap_sz);
 }
 
+void array_test()
+{
+    Array *ar = NULL;
+    array_new(&ar);
+    array_destroy(ar);
+
+}
+
 int main(void)
 {
     bsp_init();
     //eeprom_test();
-    mem_test();
+    //mem_test();
+    array_test();
     while(1)
     {
         ;

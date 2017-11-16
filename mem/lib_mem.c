@@ -258,6 +258,11 @@ void *pvPortMalloc( size_t xWantedSize )
 }
 /*-----------------------------------------------------------*/
 
+void *pvPortCalloc(size_t n, size_t xWantedSize )
+{
+	return pvPortMalloc(n * xWantedSize);
+}
+
 void vPortFree( void *pv )
 {
     unsigned char *puc = ( unsigned char * ) pv;

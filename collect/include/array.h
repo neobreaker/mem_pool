@@ -22,7 +22,7 @@
 #define COLLECTIONS_C_ARRAY_H
 
 #include "common.h"
-
+#include "lib_mem.h"
 /**
  * A dynamic array that expands automatically as elements are
  * added. The array supports amortized constant time insertion

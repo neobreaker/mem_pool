@@ -33,6 +33,7 @@
 ..\obj\main.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 ..\obj\main.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 ..\obj\main.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+..\obj\main.o: ..\mem\lib_mem.h
 ..\obj\main.o: ..\ccdebug\inlcude\ccdebug.h
 ..\obj\main.o: ..\ccdebug\inlcude\ccdebug_core.h
 ..\obj\main.o: ..\ccdebug\inlcude\ccdebug_port.h
@@ -44,4 +45,3 @@
 ..\obj\main.o: ..\SYSTEM\sys\sys.h
 ..\obj\main.o: ..\SYSTEM\delay\delay.h
 ..\obj\main.o: ..\24CXX\24cxx.h
-..\obj\main.o: ..\mem\lib_mem.h

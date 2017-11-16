@@ -119,9 +119,9 @@ void array_conf_init(ArrayConf *conf)
 {
     conf->exp_factor = DEFAULT_EXPANSION_FACTOR;
     conf->capacity   = DEFAULT_CAPACITY;
-    conf->mem_alloc  = malloc;
-    conf->mem_calloc = calloc;
-    conf->mem_free   = free;
+    conf->mem_alloc  = pvPortMalloc;
+    conf->mem_calloc = pvPortCalloc;
+    conf->mem_free   = vPortFree;
 }
 
 /**
