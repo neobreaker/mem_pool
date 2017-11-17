@@ -1,11 +1,15 @@
 #include "stm32f10x.h"
-#include "Array.h"
 #include "ccdebug.h"
 #include "stdio.h"
-#include "deque.h"
 #include "iic_bus.h"
 #include "24cxx.h"
 #include "lib_mem.h"
+#include "array.h"
+#include "deque.h"
+#include "queue.h"
+#include "stack.h"
+#include "slist.h"
+#include "list.h"
 
 //__align(4) char membase[MEM_MAX_SIZE];
 
@@ -67,10 +71,145 @@ void mem_test()
 
 void array_test()
 {
+    size_t i = 0;
+    int *pv = NULL;
+    int val[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     Array *ar = NULL;
+
     array_new(&ar);
+
+    for(i = 0 ; i < sizeof(val)/ sizeof(int); i++)
+    {
+        array_add(ar, &val[i]);
+    }
+
+    for(i = 0 ; i < sizeof(val)/ sizeof(int); i++)
+    {
+        array_get_at(ar, i, (void**)&pv);
+        printf("index %d is %d\r", i, *pv);
+    }
+
     array_destroy(ar);
 
+}
+
+void deque_test()
+{
+    size_t i = 0;
+    int *pv = NULL;
+    int val[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    Deque *deque = NULL;
+    DequeIter iter;
+
+    deque_new(&deque);
+
+
+    for(i = 0 ; i < sizeof(val)/ sizeof(int); i++)
+    {
+        deque_add(deque, &val[i]);
+    }
+
+    deque_iter_init(&iter, deque);
+    while(deque_iter_next(&iter, (void **)&pv) != CC_ITER_END)
+    {
+        printf("index %d is %d\r", i, *pv);
+    }
+
+    deque_destroy(deque);
+
+}
+
+void queue_test()
+{
+    size_t i = 0;
+    int *pv = NULL;
+    int val[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    Queue *queue = NULL;
+    QueueIter iter;
+
+    queue_new(&queue);
+
+    for(i = 0 ; i < sizeof(val)/ sizeof(int); i++)
+    {
+        queue_enqueue(queue, &val[i]);
+    }
+
+    queue_iter_init(&iter, queue);
+    while(queue_iter_next(&iter, (void **)&pv) != CC_ITER_END)
+    {
+        printf("index %d is %d\r", i, *pv);
+    }
+
+    while(queue_size(queue) > 0)
+    {
+        queue_poll(queue, (void **)&pv);
+        printf("poll %d\r", *pv);
+    }
+
+    CC_ASSERT("queue poll error", queue_size(queue) == 0);
+
+    queue_destroy(queue);
+
+}
+
+void stack_test()
+{
+    size_t i = 0;
+    int *pv = NULL;
+    int val[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    Stack *stack = NULL;
+    StackIter iter;
+
+    stack_new(&stack);
+
+    for(i = 0 ; i < sizeof(val)/ sizeof(int); i++)
+    {
+        stack_push(stack, &val[i]);
+    }
+
+    stack_iter_init(&iter, stack);
+    while(stack_iter_next(&iter, (void **)&pv) != CC_ITER_END)
+    {
+        printf("index %d is %d\r", i, *pv);
+    }
+
+    while(stack_size(stack) > 0)
+    {
+        stack_pop(stack, (void **)&pv);
+        printf("poll %d\r", *pv);
+    }
+
+    stack_destroy(stack);
+}
+
+void slist_test()
+{
+    size_t i = 0;
+    int *pv = NULL;
+    int val[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    SList *slist = NULL;
+    SListIter iter;
+
+    slist_new(&slist);
+
+    for(i = 0 ; i < sizeof(val)/ sizeof(int); i++)
+    {
+        slist_add(slist, &val[i]);
+    }
+
+    slist_iter_init(&iter, slist);
+
+    while (slist_iter_next(&iter, (void*) &pv) != CC_ITER_END)
+    {
+        if (*pv == 3)
+        {
+            slist_iter_remove(&iter, NULL);
+        }
+    }
+
+    CC_ASSERT("slist_iter_remove error ", slist_size(slist) == 9);
+
+    slist_destroy(slist);
 }
 
 int main(void)
@@ -78,7 +217,11 @@ int main(void)
     bsp_init();
     //eeprom_test();
     //mem_test();
-    array_test();
+    //array_test();
+    //deque_test();
+    //queue_test();
+    //stack_test();
+    slist_test();
     while(1)
     {
         ;

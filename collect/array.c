@@ -357,7 +357,7 @@ void array_remove_all_free(Array *ar)
 {
     size_t i;
     for (i = 0; i < ar->size; i++)
-        free(ar->buffer[i]);
+        ar->mem_free(ar->buffer[i]);
 
     array_remove_all(ar);
 }

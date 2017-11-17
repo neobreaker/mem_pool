@@ -583,6 +583,31 @@
               <FileType>1</FileType>
               <FilePath>..\collect\array.c</FilePath>
             </File>
+            <File>
+              <FileName>deque.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\collect\deque.c</FilePath>
+            </File>
+            <File>
+              <FileName>queue.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\collect\queue.c</FilePath>
+            </File>
+            <File>
+              <FileName>stack.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\collect\stack.c</FilePath>
+            </File>
+            <File>
+              <FileName>slist.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\collect\slist.c</FilePath>
+            </File>
+            <File>
+              <FileName>list.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\collect\list.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

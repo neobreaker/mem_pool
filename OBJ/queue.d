@@ -1,0 +1,9 @@
+..\obj\queue.o: ..\collect\queue.c
+..\obj\queue.o: ..\collect\include\queue.h
+..\obj\queue.o: ..\collect\include\common.h
+..\obj\queue.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+..\obj\queue.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\obj\queue.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+..\obj\queue.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+..\obj\queue.o: ..\mem\lib_mem.h
+..\obj\queue.o: ..\collect\include\deque.h

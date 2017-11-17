@@ -1,0 +1,9 @@
+..\obj\stack.o: ..\collect\stack.c
+..\obj\stack.o: ..\collect\include\array.h
+..\obj\stack.o: ..\collect\include\common.h
+..\obj\stack.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+..\obj\stack.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\obj\stack.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+..\obj\stack.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+..\obj\stack.o: ..\mem\lib_mem.h
+..\obj\stack.o: ..\collect\include\stack.h

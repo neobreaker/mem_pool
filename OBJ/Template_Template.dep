@@ -1,5 +1,5 @@
 Dependencies for Project 'Template', Target 'Template': (DO NOT MODIFY !)
-F (.\main.c)(0x5A0D477D)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I..\USER -I..\CORE -I..\STM32F10x_FWLib\inc -I..\SYSTEM\delay -I..\SYSTEM\sys -I..\SYSTEM\usart -I..\collect\include -I..\ccdebug\inlcude -I..\IIC -I..\24CXX -I..\IIC\include -I..\mem-I F:\collect\mem_pool\USER\RTE-I d:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.1.0-I d:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\main.o --omf_browse ..\obj\main.crf --depend ..\obj\main.d)
+F (.\main.c)(0x5A0E9CB9)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I..\USER -I..\CORE -I..\STM32F10x_FWLib\inc -I..\SYSTEM\delay -I..\SYSTEM\sys -I..\SYSTEM\usart -I..\collect\include -I..\ccdebug\inlcude -I..\IIC -I..\24CXX -I..\IIC\include -I..\mem-I F:\collect\mem_pool\USER\RTE-I d:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.1.0-I d:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\main.o --omf_browse ..\obj\main.crf --depend ..\obj\main.d)
 I (stm32f10x.h)(0x4D783CB4)
 I (..\CORE\core_cm3.h)(0x4D523B58)
 I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5475F300)
@@ -29,23 +29,27 @@ I (..\STM32F10x_FWLib\inc\stm32f10x_tim.h)(0x4D783BB4)
 I (..\STM32F10x_FWLib\inc\stm32f10x_usart.h)(0x504F415E)
 I (..\STM32F10x_FWLib\inc\stm32f10x_wwdg.h)(0x4D783BB4)
 I (..\STM32F10x_FWLib\inc\misc.h)(0x4D783BB4)
-I (..\collect\include\Array.h)(0x5A0D46AC)
-I (..\collect\include\common.h)(0x595361E7)
-I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5475F300)
-I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5475F300)
-I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x5475F300)
-I (..\mem\lib_mem.h)(0x5A0D43CD)
 I (..\ccdebug\inlcude\ccdebug.h)(0x595ADF8C)
 I (..\ccdebug\inlcude\ccdebug_core.h)(0x595ADF8C)
 I (..\ccdebug\inlcude\ccdebug_port.h)(0x595ADF8C)
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x5475F300)
-I (..\collect\include\deque.h)(0x5927C310)
 I (..\IIC\include\iic_bus.h)(0x598BC5A6)
 I (..\IIC\include\iic_core.h)(0x598C1F80)
 I (..\IIC\include\iic_port.h)(0x598C21B6)
 I (..\SYSTEM\sys\sys.h)(0x550F951B)
 I (..\SYSTEM\delay\delay.h)(0x555AC82B)
 I (..\24CXX\24cxx.h)(0x598C20D6)
+I (..\mem\lib_mem.h)(0x5A0D43CD)
+I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5475F300)
+I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x5475F300)
+I (..\collect\include\array.h)(0x5A0E3DE5)
+I (..\collect\include\common.h)(0x5A0E3DDA)
+I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5475F300)
+I (..\collect\include\deque.h)(0x5927C310)
+I (..\collect\include\queue.h)(0x5927C310)
+I (..\collect\include\stack.h)(0x5927C310)
+I (..\collect\include\slist.h)(0x5927C310)
+I (..\collect\include\list.h)(0x5927C310)
 F (.\stm32f10x_it.c)(0x4EBEACB0)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I..\USER -I..\CORE -I..\STM32F10x_FWLib\inc -I..\SYSTEM\delay -I..\SYSTEM\sys -I..\SYSTEM\usart -I..\collect\include -I..\ccdebug\inlcude -I..\IIC -I..\24CXX -I..\IIC\include -I..\mem-I F:\collect\mem_pool\USER\RTE-I d:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.1.0-I d:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\stm32f10x_it.o --omf_browse ..\obj\stm32f10x_it.crf --depend ..\obj\stm32f10x_it.d)
 I (stm32f10x_it.h)(0x4D99A426)
 I (stm32f10x.h)(0x4D783CB4)
@@ -808,14 +812,57 @@ I (..\STM32F10x_FWLib\inc\stm32f10x_tim.h)(0x4D783BB4)
 I (..\STM32F10x_FWLib\inc\stm32f10x_usart.h)(0x504F415E)
 I (..\STM32F10x_FWLib\inc\misc.h)(0x4D783BB4)
 F (..\collect\common.c)(0x5927C310)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I..\USER -I..\CORE -I..\STM32F10x_FWLib\inc -I..\SYSTEM\delay -I..\SYSTEM\sys -I..\SYSTEM\usart -I..\collect\include -I..\ccdebug\inlcude -I..\IIC -I..\24CXX -I..\IIC\include -I..\mem-I F:\collect\mem_pool\USER\RTE-I d:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.1.0-I d:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\common.o --omf_browse ..\obj\common.crf --depend ..\obj\common.d)
-I (..\collect\include\common.h)(0x595361E7)
+I (..\collect\include\common.h)(0x5A0E3DDA)
 I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5475F300)
 I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5475F300)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5475F300)
 I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x5475F300)
-F (..\collect\array.c)(0x5A0D4694)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I..\USER -I..\CORE -I..\STM32F10x_FWLib\inc -I..\SYSTEM\delay -I..\SYSTEM\sys -I..\SYSTEM\usart -I..\collect\include -I..\ccdebug\inlcude -I..\IIC -I..\24CXX -I..\IIC\include -I..\mem-I F:\collect\mem_pool\USER\RTE-I d:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.1.0-I d:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\array.o --omf_browse ..\obj\array.crf --depend ..\obj\array.d)
-I (..\collect\include\array.h)(0x5A0D46AC)
-I (..\collect\include\common.h)(0x595361E7)
+I (..\mem\lib_mem.h)(0x5A0D43CD)
+F (..\collect\array.c)(0x5A0E49F8)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I..\USER -I..\CORE -I..\STM32F10x_FWLib\inc -I..\SYSTEM\delay -I..\SYSTEM\sys -I..\SYSTEM\usart -I..\collect\include -I..\ccdebug\inlcude -I..\IIC -I..\24CXX -I..\IIC\include -I..\mem-I F:\collect\mem_pool\USER\RTE-I d:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.1.0-I d:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\array.o --omf_browse ..\obj\array.crf --depend ..\obj\array.d)
+I (..\collect\include\array.h)(0x5A0E3DE5)
+I (..\collect\include\common.h)(0x5A0E3DDA)
+I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5475F300)
+I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5475F300)
+I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5475F300)
+I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x5475F300)
+I (..\mem\lib_mem.h)(0x5A0D43CD)
+F (..\collect\deque.c)(0x5A0E45EB)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I..\USER -I..\CORE -I..\STM32F10x_FWLib\inc -I..\SYSTEM\delay -I..\SYSTEM\sys -I..\SYSTEM\usart -I..\collect\include -I..\ccdebug\inlcude -I..\IIC -I..\24CXX -I..\IIC\include -I..\mem-I F:\collect\mem_pool\USER\RTE-I d:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.1.0-I d:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\deque.o --omf_browse ..\obj\deque.crf --depend ..\obj\deque.d)
+I (..\collect\include\deque.h)(0x5927C310)
+I (..\collect\include\common.h)(0x5A0E3DDA)
+I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5475F300)
+I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5475F300)
+I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5475F300)
+I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x5475F300)
+I (..\mem\lib_mem.h)(0x5A0D43CD)
+F (..\collect\queue.c)(0x5A0E49C1)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I..\USER -I..\CORE -I..\STM32F10x_FWLib\inc -I..\SYSTEM\delay -I..\SYSTEM\sys -I..\SYSTEM\usart -I..\collect\include -I..\ccdebug\inlcude -I..\IIC -I..\24CXX -I..\IIC\include -I..\mem-I F:\collect\mem_pool\USER\RTE-I d:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.1.0-I d:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\queue.o --omf_browse ..\obj\queue.crf --depend ..\obj\queue.d)
+I (..\collect\include\queue.h)(0x5927C310)
+I (..\collect\include\common.h)(0x5A0E3DDA)
+I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5475F300)
+I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5475F300)
+I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5475F300)
+I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x5475F300)
+I (..\mem\lib_mem.h)(0x5A0D43CD)
+I (..\collect\include\deque.h)(0x5927C310)
+F (..\collect\stack.c)(0x5A0E84CC)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I..\USER -I..\CORE -I..\STM32F10x_FWLib\inc -I..\SYSTEM\delay -I..\SYSTEM\sys -I..\SYSTEM\usart -I..\collect\include -I..\ccdebug\inlcude -I..\IIC -I..\24CXX -I..\IIC\include -I..\mem-I F:\collect\mem_pool\USER\RTE-I d:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.1.0-I d:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\stack.o --omf_browse ..\obj\stack.crf --depend ..\obj\stack.d)
+I (..\collect\include\array.h)(0x5A0E3DE5)
+I (..\collect\include\common.h)(0x5A0E3DDA)
+I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5475F300)
+I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5475F300)
+I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5475F300)
+I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x5475F300)
+I (..\mem\lib_mem.h)(0x5A0D43CD)
+I (..\collect\include\stack.h)(0x5927C310)
+F (..\collect\slist.c)(0x5A0E9572)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I..\USER -I..\CORE -I..\STM32F10x_FWLib\inc -I..\SYSTEM\delay -I..\SYSTEM\sys -I..\SYSTEM\usart -I..\collect\include -I..\ccdebug\inlcude -I..\IIC -I..\24CXX -I..\IIC\include -I..\mem-I F:\collect\mem_pool\USER\RTE-I d:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.1.0-I d:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\slist.o --omf_browse ..\obj\slist.crf --depend ..\obj\slist.d)
+I (..\collect\include\slist.h)(0x5927C310)
+I (..\collect\include\common.h)(0x5A0E3DDA)
+I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5475F300)
+I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5475F300)
+I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5475F300)
+I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x5475F300)
+I (..\mem\lib_mem.h)(0x5A0D43CD)
+F (..\collect\list.c)(0x5A0EA074)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I..\USER -I..\CORE -I..\STM32F10x_FWLib\inc -I..\SYSTEM\delay -I..\SYSTEM\sys -I..\SYSTEM\usart -I..\collect\include -I..\ccdebug\inlcude -I..\IIC -I..\24CXX -I..\IIC\include -I..\mem-I F:\collect\mem_pool\USER\RTE-I d:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.1.0-I d:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\list.o --omf_browse ..\obj\list.crf --depend ..\obj\list.d)
+I (..\collect\include\list.h)(0x5927C310)
+I (..\collect\include\common.h)(0x5A0E3DDA)
 I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5475F300)
 I (d:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5475F300)
 I (d:\Keil_v5\ARM\ARMCC\include\stdbool.h)(0x5475F300)
@@ -954,7 +1001,7 @@ I (..\IIC\include\iic_core.h)(0x598C1F80)
 I (..\IIC\include\iic_port.h)(0x598C21B6)
 I (..\SYSTEM\sys\sys.h)(0x550F951B)
 I (..\SYSTEM\delay\delay.h)(0x555AC82B)
-F (..\mem\lib_mem.c)(0x5A0D43B8)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I..\USER -I..\CORE -I..\STM32F10x_FWLib\inc -I..\SYSTEM\delay -I..\SYSTEM\sys -I..\SYSTEM\usart -I..\collect\include -I..\ccdebug\inlcude -I..\IIC -I..\24CXX -I..\IIC\include -I..\mem-I F:\collect\mem_pool\USER\RTE-I d:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.1.0-I d:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\lib_mem.o --omf_browse ..\obj\lib_mem.crf --depend ..\obj\lib_mem.d)
+F (..\mem\lib_mem.c)(0x5A0E8C66)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I..\USER -I..\CORE -I..\STM32F10x_FWLib\inc -I..\SYSTEM\delay -I..\SYSTEM\sys -I..\SYSTEM\usart -I..\collect\include -I..\ccdebug\inlcude -I..\IIC -I..\24CXX -I..\IIC\include -I..\mem-I F:\collect\mem_pool\USER\RTE-I d:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.1.0-I d:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="514" -DSTM32F10X_HD -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER-o ..\obj\lib_mem.o --omf_browse ..\obj\lib_mem.crf --depend ..\obj\lib_mem.d)
 I (..\mem\lib_mem.h)(0x5A0D43CD)
 I (d:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x5475F300)
 I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x5475F300)

@@ -260,7 +260,10 @@ void *pvPortMalloc( size_t xWantedSize )
 
 void *pvPortCalloc(size_t n, size_t xWantedSize )
 {
-	return pvPortMalloc(n * xWantedSize);
+	void *pvReturn = NULL;
+	pvReturn = pvPortMalloc(n * xWantedSize);
+	memset(pvReturn, 0, n * xWantedSize);
+	return pvReturn;
 }
 
 void vPortFree( void *pv )

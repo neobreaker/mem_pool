@@ -25,6 +25,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <string.h>
+#include "lib_mem.h"
 
 
 #ifdef ARCH_64
