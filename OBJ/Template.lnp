@@ -35,6 +35,8 @@
 "..\obj\stack.o"
 "..\obj\slist.o"
 "..\obj\list.o"
+"..\obj\hashtable.o"
+"..\obj\hashset.o"
 "..\obj\ccdebug_core.o"
 "..\obj\ccdebug_port.o"
 "..\obj\iic_port.o"

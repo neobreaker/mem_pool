@@ -608,6 +608,16 @@
               <FileType>1</FileType>
               <FilePath>..\collect\list.c</FilePath>
             </File>
+            <File>
+              <FileName>hashtable.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\collect\hashtable.c</FilePath>
+            </File>
+            <File>
+              <FileName>hashset.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\collect\hashset.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

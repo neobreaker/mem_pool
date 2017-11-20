@@ -23,8 +23,7 @@
 #define DEFAULT_CAPACITY 16
 #define DEFAULT_LOAD_FACTOR 0.75f
 
-struct hashtable_s
-{
+struct hashtable_s {
     size_t       capacity;
     size_t       size;
     size_t       threshold;
@@ -48,7 +47,7 @@ static enum cc_stat remove_null_key (HashTable *table, void **out);
 static size_t get_table_index  (HashTable *table, void *key);
 static size_t round_pow_two    (size_t n);
 static void   move_entries     (TableEntry **src_bucket, TableEntry **dest_bucket,
-                                size_t src_size, size_t dest_size);
+                                 size_t src_size, size_t dest_size);
 
 /**
  * Creates a new HashTable and returns a status code.
@@ -90,8 +89,7 @@ enum cc_stat hashtable_new_conf(HashTableConf const * const conf, HashTable **ou
     table->capacity = round_pow_two(conf->initial_capacity);
     table->buckets  = conf->mem_calloc(table->capacity, sizeof(TableEntry *));
 
-    if (!table->buckets)
-    {
+    if (!table->buckets) {
         conf->mem_free(table);
         return CC_ERR_ALLOC;
     }
@@ -124,9 +122,9 @@ void hashtable_conf_init(HashTableConf *conf)
     conf->load_factor      = DEFAULT_LOAD_FACTOR;
     conf->key_length       = KEY_LENGTH_VARIABLE;
     conf->hash_seed        = 0;
-    conf->mem_alloc        = pvPortMalloc;
-    conf->mem_calloc       = pvPortCalloc;
-    conf->mem_free         = vPortFree;
+    conf->mem_alloc        = malloc;
+    conf->mem_calloc       = calloc;
+    conf->mem_free         = free;
 }
 
 /**
@@ -139,12 +137,10 @@ void hashtable_conf_init(HashTableConf *conf)
 void hashtable_destroy(HashTable *table)
 {
     size_t i;
-    for (i = 0; i < table->capacity; i++)
-    {
+    for (i = 0; i < table->capacity; i++) {
         TableEntry *next = table->buckets[i];
 
-        while (next)
-        {
+        while (next) {
             TableEntry *tmp = next->next;
             table->mem_free(next);
             next = tmp;
@@ -170,14 +166,13 @@ void hashtable_destroy(HashTable *table)
 enum cc_stat hashtable_add(HashTable *table, void *key, void *val)
 {
     enum cc_stat stat;
-    size_t hash;
-    size_t i;
-    TableEntry *replace = NULL;
-    TableEntry *new_entry = NULL;
-    void *rk = NULL;
-
-    if (table->size >= table->threshold)
-    {
+	size_t hash;
+	size_t i;
+	TableEntry *replace = NULL;
+	TableEntry *new_entry = NULL;
+	void *rk = NULL;
+	
+    if (table->size >= table->threshold) {
         if ((stat = resize(table, table->capacity << 1)) != CC_OK)
             return stat;
     }
@@ -190,11 +185,9 @@ enum cc_stat hashtable_add(HashTable *table, void *key, void *val)
 
     replace = table->buckets[i];
 
-    while (replace)
-    {
+    while (replace) {
         rk = replace->key;
-        if (rk && table->key_cmp(rk, key) == 0)
-        {
+        if (rk && table->key_cmp(rk, key) == 0) {
             replace->value = val;
             return CC_OK;
         }
@@ -230,12 +223,10 @@ enum cc_stat hashtable_add(HashTable *table, void *key, void *val)
 static enum cc_stat add_null_key(HashTable *table, void *val)
 {
     TableEntry *replace = table->buckets[0];
-    TableEntry *new_entry = NULL;
-
-    while (replace)
-    {
-        if (!replace->key)
-        {
+	TableEntry *new_entry = NULL;
+	
+    while (replace) {
+        if (!replace->key) {
             replace->value = val;
             return CC_OK;
         }
@@ -270,18 +261,16 @@ static enum cc_stat add_null_key(HashTable *table, void *val)
  */
 enum cc_stat hashtable_get(HashTable *table, void *key, void **out)
 {
-    size_t      index;
-    TableEntry *bucket = NULL;
+	size_t      index;
+	TableEntry *bucket = NULL;
     if (!key)
         return get_null_key(table, out);
 
     index = get_table_index(table, key);
     bucket = table->buckets[index];
 
-    while (bucket)
-    {
-        if (bucket->key && table->key_cmp(bucket->key, key) == 0)
-        {
+    while (bucket) {
+        if (bucket->key && table->key_cmp(bucket->key, key) == 0) {
             *out = bucket->value;
             return CC_OK;
         }
@@ -304,10 +293,8 @@ static enum cc_stat get_null_key(HashTable *table, void **out)
 {
     TableEntry *bucket = table->buckets[0];
 
-    while (bucket)
-    {
-        if (bucket->key == NULL)
-        {
+    while (bucket) {
+        if (bucket->key == NULL) {
             *out = bucket->value;
             return CC_OK;
         }
@@ -330,12 +317,12 @@ static enum cc_stat get_null_key(HashTable *table, void **out)
  */
 enum cc_stat hashtable_remove(HashTable *table, void *key, void **out)
 {
-    size_t i;
-    TableEntry *e = NULL;
-    TableEntry *prev = NULL;
+	size_t i;
+	TableEntry *e = NULL;
+	TableEntry *prev = NULL;
     TableEntry *next = NULL;
-    void *value = NULL;
-
+	void *value = NULL;
+	
     if (!key)
         return remove_null_key(table, out);
 
@@ -343,12 +330,10 @@ enum cc_stat hashtable_remove(HashTable *table, void *key, void **out)
 
     e = table->buckets[i];
 
-    while (e)
-    {
+    while (e) {
         next = e->next;
 
-        if (e->key && table->key_cmp(key, e->key) == 0)
-        {
+        if (e->key && table->key_cmp(key, e->key) == 0) {
             value = e->value;
 
             if (!prev)
@@ -385,14 +370,12 @@ enum cc_stat remove_null_key(HashTable *table, void **out)
 
     TableEntry *prev = NULL;
     TableEntry *next = NULL;
-    void *value = NULL;
-
-    while (e)
-    {
+	void *value = NULL;
+		
+    while (e) {
         next = e->next;
 
-        if (e->key == NULL)
-        {
+        if (e->key == NULL) {
             value = e->value;
 
             if (!prev)
@@ -420,14 +403,12 @@ enum cc_stat remove_null_key(HashTable *table, void **out)
 void hashtable_remove_all(HashTable *table)
 {
     size_t i;
-    TableEntry *entry = NULL;
-    TableEntry *next = NULL;
-
-    for (i = 0; i < table->capacity; i++)
-    {
+	TableEntry *entry = NULL;
+	TableEntry *next = NULL;
+	
+    for (i = 0; i < table->capacity; i++) {
         entry = table->buckets[i];
-        while (entry)
-        {
+        while (entry) {
             next = entry->next;
             table->mem_free(entry);
             table->size--;
@@ -450,8 +431,8 @@ void hashtable_remove_all(HashTable *table)
  */
 static enum cc_stat resize(HashTable *t, size_t new_capacity)
 {
-    TableEntry **new_buckets = NULL;
-    TableEntry **old_buckets = NULL;
+	TableEntry **new_buckets = NULL;
+	TableEntry **old_buckets = NULL;
     if (t->capacity == MAX_POW_TWO)
         return CC_ERR_MAX_CAPACITY;
 
@@ -517,16 +498,14 @@ move_entries(TableEntry **src_bucket, TableEntry **dest_bucket,
              size_t       src_size,   size_t       dest_size)
 {
     size_t i;
-    TableEntry *entry = NULL;
-    TableEntry *next = NULL;
-    size_t      index;
-
-    for (i = 0; i < src_size; i++)
-    {
+	TableEntry *entry = NULL;
+	TableEntry *next = NULL;
+	size_t      index;
+	
+    for (i = 0; i < src_size; i++) {
         entry = src_bucket[i];
 
-        while (entry)
-        {
+        while (entry) {
             next = entry->next;
             index = entry->hash & (dest_size - 1);
 
@@ -576,8 +555,7 @@ bool hashtable_contains_key(HashTable *table, void *key)
 {
     TableEntry *entry = table->buckets[get_table_index(table, key)];
 
-    while (entry)
-    {
+    while (entry) {
         if (table->key_cmp(key, entry->key) == 0)
             return true;
 
@@ -598,12 +576,12 @@ bool hashtable_contains_key(HashTable *table, void *key)
  */
 enum cc_stat hashtable_get_values(HashTable *table, Array **out)
 {
-    size_t i;
+	size_t i;
     ArrayConf ac;
     Array *values = NULL;
-    TableEntry *entry = NULL;
-    enum cc_stat stat;
-
+	TableEntry *entry = NULL;
+	enum cc_stat stat;
+	
     array_conf_init(&ac);
 
     ac.capacity   = table->size;
@@ -616,18 +594,13 @@ enum cc_stat hashtable_get_values(HashTable *table, Array **out)
     if (stat != CC_OK)
         return stat;
 
-    for (i = 0; i <table->capacity; i++)
-    {
+    for (i = 0; i <table->capacity; i++) {
         entry = table->buckets[i];
 
-        while (entry)
-        {
-            if ((stat = array_add(values, entry->value)) == CC_OK)
-            {
+        while (entry) {
+            if ((stat = array_add(values, entry->value)) == CC_OK) {
                 entry = entry->next;
-            }
-            else
-            {
+            } else {
                 array_destroy(values);
                 return stat;
             }
@@ -652,9 +625,9 @@ enum cc_stat hashtable_get_keys(HashTable *table, Array **out)
     size_t i;
     ArrayConf vc;
     Array *keys = NULL;
-    TableEntry *entry = NULL;
-    enum cc_stat stat;
-
+	TableEntry *entry = NULL;
+	enum cc_stat stat;		
+	
     array_conf_init(&vc);
 
     vc.capacity   = table->size;
@@ -667,18 +640,13 @@ enum cc_stat hashtable_get_keys(HashTable *table, Array **out)
     if (stat != CC_OK)
         return stat;
 
-    for (i = 0; i < table->capacity; i++)
-    {
+    for (i = 0; i < table->capacity; i++) {
         entry = table->buckets[i];
 
-        while (entry)
-        {
-            if ((stat = array_add(keys, entry->key)) == CC_OK)
-            {
+        while (entry) {
+            if ((stat = array_add(keys, entry->key)) == CC_OK) {
                 entry = entry->next;
-            }
-            else
-            {
+            } else {
                 array_destroy(keys);
                 return stat;
             }
@@ -709,13 +677,11 @@ static size_t get_table_index(HashTable *table, void *key)
 void hashtable_foreach_key(HashTable *table, void (*fn) (const void *key))
 {
     size_t i;
-    TableEntry *entry = NULL;
-    for (i = 0; i <table->capacity; i++)
-    {
+	TableEntry *entry = NULL;
+    for (i = 0; i <table->capacity; i++) {
         entry = table->buckets[i];
 
-        while (entry)
-        {
+        while (entry) {
             fn(entry->key);
             entry = entry->next;
         }
@@ -732,13 +698,11 @@ void hashtable_foreach_key(HashTable *table, void (*fn) (const void *key))
 void hashtable_foreach_value(HashTable *table, void (*fn) (void *val))
 {
     size_t i;
-    TableEntry *entry = NULL;
-    for (i = 0; i <table->capacity; i++)
-    {
+	TableEntry *entry = NULL;
+    for (i = 0; i <table->capacity; i++) {
         entry = table->buckets[i];
 
-        while (entry)
-        {
+        while (entry) {
             fn(entry->value);
             entry = entry->next;
         }
@@ -755,16 +719,14 @@ void hashtable_foreach_value(HashTable *table, void (*fn) (void *val))
  */
 void hashtable_iter_init(HashTableIter *iter, HashTable *table)
 {
-    size_t i;
-    TableEntry *e = NULL;
+	size_t i;
+	TableEntry *e = NULL;
     iter->table = table;
 
 
-    for (i = 0; i < table->capacity; i++)
-    {
+    for (i = 0; i < table->capacity; i++) {
         e = table->buckets[i];
-        if (e)
-        {
+        if (e) {
             iter->bucket_index = i;
             iter->next_entry   = e;
             iter->prev_entry   = NULL;
@@ -786,7 +748,7 @@ void hashtable_iter_init(HashTableIter *iter, HashTable *table)
 enum cc_stat hashtable_iter_next(HashTableIter *iter, TableEntry **te)
 {
     size_t i;
-
+	
     if (!iter->next_entry)
         return CC_ITER_END;
 
@@ -794,20 +756,17 @@ enum cc_stat hashtable_iter_next(HashTableIter *iter, TableEntry **te)
     iter->next_entry = iter->next_entry->next;
 
     /* Iterate through the list */
-    if (iter->next_entry)
-    {
+    if (iter->next_entry) {
         *te = iter->prev_entry;
         return CC_OK;
     }
 
     /* Find the next list and return the first element*/
 
-    for (i = iter->bucket_index + 1; i < iter->table->capacity; i++)
-    {
+    for (i = iter->bucket_index + 1; i < iter->table->capacity; i++) {
         iter->next_entry = iter->table->buckets[i];
 
-        if (iter->next_entry)
-        {
+        if (iter->next_entry) {
             iter->bucket_index = i;
             break;
         }
@@ -921,15 +880,14 @@ uint64_t hashtable_hash(const void *key, int len, uint32_t seed)
     const uint64_t  c2      = BIG_CONSTANT(0x4cf5ad432745937f);
 
     const uint64_t *blocks  = (const uint64_t*)(data);
-    const uint8_t *tail = NULL;
+	const uint8_t *tail = NULL;
 
-
+	
     uint64_t k1 = 0;
     uint64_t k2 = 0;
-
+		
     int i;
-    for(i = 0; i < nblocks; i++)
-    {
+    for(i = 0; i < nblocks; i++) {
         uint64_t k1 = blocks[i*2+0];
         uint64_t k2 = blocks[i*2+1];
 
@@ -952,51 +910,34 @@ uint64_t hashtable_hash(const void *key, int len, uint32_t seed)
 
     tail = (const uint8_t*)(data + nblocks*16);
 
-    switch(len & 15)
-    {
-        case 15:
-            k2 ^= ((uint64_t)tail[14]) << 48;
-        case 14:
-            k2 ^= ((uint64_t)tail[13]) << 40;
-        case 13:
-            k2 ^= ((uint64_t)tail[12]) << 32;
-        case 12:
-            k2 ^= ((uint64_t)tail[11]) << 24;
-        case 11:
-            k2 ^= ((uint64_t)tail[10]) << 16;
-        case 10:
-            k2 ^= ((uint64_t)tail[ 9]) << 8;
-        case  9:
-            k2 ^= ((uint64_t)tail[ 8]) << 0;
-            k2 *= c2;
-            k2  = ROTL64(k2,33);
-            k2 *= c1;
-            h2 ^= k2;
+    switch(len & 15) {
+    case 15: k2 ^= ((uint64_t)tail[14]) << 48;
+    case 14: k2 ^= ((uint64_t)tail[13]) << 40;
+    case 13: k2 ^= ((uint64_t)tail[12]) << 32;
+    case 12: k2 ^= ((uint64_t)tail[11]) << 24;
+    case 11: k2 ^= ((uint64_t)tail[10]) << 16;
+    case 10: k2 ^= ((uint64_t)tail[ 9]) << 8;
+    case  9: k2 ^= ((uint64_t)tail[ 8]) << 0;
+             k2 *= c2;
+             k2  = ROTL64(k2,33);
+             k2 *= c1;
+             h2 ^= k2;
 
-        case  8:
-            k1 ^= ((uint64_t)tail[ 7]) << 56;
-        case  7:
-            k1 ^= ((uint64_t)tail[ 6]) << 48;
-        case  6:
-            k1 ^= ((uint64_t)tail[ 5]) << 40;
-        case  5:
-            k1 ^= ((uint64_t)tail[ 4]) << 32;
-        case  4:
-            k1 ^= ((uint64_t)tail[ 3]) << 24;
-        case  3:
-            k1 ^= ((uint64_t)tail[ 2]) << 16;
-        case  2:
-            k1 ^= ((uint64_t)tail[ 1]) << 8;
-        case  1:
-            k1 ^= ((uint64_t)tail[ 0]) << 0;
-            k1 *= c1;
-            k1  = ROTL64(k1,31);
-            k1 *= c2;
-            h1 ^= k1;
+    case  8: k1 ^= ((uint64_t)tail[ 7]) << 56;
+    case  7: k1 ^= ((uint64_t)tail[ 6]) << 48;
+    case  6: k1 ^= ((uint64_t)tail[ 5]) << 40;
+    case  5: k1 ^= ((uint64_t)tail[ 4]) << 32;
+    case  4: k1 ^= ((uint64_t)tail[ 3]) << 24;
+    case  3: k1 ^= ((uint64_t)tail[ 2]) << 16;
+    case  2: k1 ^= ((uint64_t)tail[ 1]) << 8;
+    case  1: k1 ^= ((uint64_t)tail[ 0]) << 0;
+             k1 *= c1;
+             k1  = ROTL64(k1,31);
+             k1 *= c2;
+             h1 ^= k1;
     };
 
-    h1 ^= len;
-    h2 ^= len;
+    h1 ^= len; h2 ^= len;
 
     h1 += h2;
     h2 += h1;
@@ -1024,8 +965,7 @@ uint64_t hashtable_hash_ptr(const void *key, int len, uint32_t seed)
     const uint64_t c2 = BIG_CONSTANT(0x4cf5ad432745937f);
 
     int i;
-    for (i = 0; i < nblocks; i++)
-    {
+    for (i = 0; i < nblocks; i++) {
         uint64_t k1 = ((uintptr_t) key >> (2 * i)) & 0xff;
         uint64_t k2 = ROTL64(k1, 13);
 
@@ -1049,8 +989,7 @@ uint64_t hashtable_hash_ptr(const void *key, int len, uint32_t seed)
     /* Since the pointers are power of two length
      * we don't need a tail mix */
 
-    h1 ^= len;
-    h2 ^= len;
+    h1 ^= len; h2 ^= len;
 
     h1 += h2;
     h2 += h1;
@@ -1098,12 +1037,11 @@ size_t hashtable_hash(const void *key, int len, uint32_t seed)
 
     const uint32_t *blocks = (const uint32_t *)(data + nblocks*4);
 
-    const uint8_t * tail = NULL;
+	const uint8_t * tail = NULL;
     uint32_t k1 = 0;
-
+	
     int i;
-    for (i = -nblocks; i; i++)
-    {
+    for (i = -nblocks; i; i++) {
         uint32_t k1 = blocks[i];
 
         k1 *= c1;
@@ -1118,14 +1056,10 @@ size_t hashtable_hash(const void *key, int len, uint32_t seed)
     tail = (const uint8_t*)(data + nblocks*4);
 
 
-    switch(len & 3)
-    {
-        case 3:
-            k1 ^= tail[2] << 16;
-        case 2:
-            k1 ^= tail[1] << 8;
-        case 1:
-            k1 ^= tail[0];
+    switch(len & 3) {
+    case 3: k1 ^= tail[2] << 16;
+    case 2: k1 ^= tail[1] << 8;
+    case 1: k1 ^= tail[0];
             k1 *= c1;
             k1  = ROTL32(k1,15);
             k1 *= c2;
@@ -1151,8 +1085,7 @@ size_t hashtable_hash_ptr(const void *key, int len, uint32_t seed)
     const uint32_t c2 = 0x1b873593;
 
     int i;
-    for (i = 0; i < nblocks; i++)
-    {
+    for (i = 0; i < nblocks; i++) {
         uint32_t k1 = ((uintptr_t) key >> (2*i)) & 0xff;
 
         k1 *= c1;

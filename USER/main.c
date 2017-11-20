@@ -10,6 +10,8 @@
 #include "stack.h"
 #include "slist.h"
 #include "list.h"
+#include "hashtable.h"
+#include "hashset.h"
 
 //__align(4) char membase[MEM_MAX_SIZE];
 
@@ -212,6 +214,88 @@ void slist_test()
     slist_destroy(slist);
 }
 
+void list_test()
+{
+    size_t i = 0;
+    int *pv = NULL;
+    int val[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    List *list = NULL;
+    ListIter iter;
+
+    list_new(&list);
+
+    for(i = 0 ; i < sizeof(val)/ sizeof(int); i++)
+    {
+        list_add(list, &val[i]);
+    }
+
+    list_iter_init(&iter, list);
+    while(list_iter_next(&iter, (void*) &pv) != CC_ITER_END)
+    {
+        if (*pv == 3)
+        {
+            list_iter_remove(&iter, NULL);
+        }
+    }
+
+    CC_ASSERT("list_iter_remove error ", list_size(list) == 9);
+
+    list_destroy(list);
+
+}
+
+void hashtable_test()
+{
+    size_t i = 0;
+    int *pv = NULL;
+    char *key[] = {"zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"};
+    int val[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+
+    HashTable *hashtable;
+    HashTableIter iter;
+
+    hashtable_new(&hashtable);
+
+    for(i = 0; i < sizeof(key)/ sizeof(char*); i++)
+    {
+        hashtable_add(hashtable, key[i], (void*)&val[i]);
+    }
+
+    for(i = 0; i < sizeof(key)/ sizeof(char*); i++)
+    {
+        hashtable_get(hashtable, key[i], (void **)&pv);
+    }
+
+    hashtable_iter_init(&iter, hashtable);
+
+
+    hashtable_destroy(hashtable);
+
+}
+
+void hashset_test()
+{
+    size_t i = 0;
+    char* pk = NULL;		//dummy
+    char* key[] = {"zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"};
+
+    HashSet* hashset;
+
+    hashset_new(&hashset);
+
+    for(i = 0; i < sizeof(key)/ sizeof(char*); i++)
+    {
+        hashset_add(hashset, (void *) key[i]);
+    }
+
+    if(hashset_contains(hashset, (void *)key[5]))
+    {
+        hashset_remove(hashset, (void *)key[5], (void *)&pk);
+    }
+
+    hashset_destroy(hashset);
+}
+
 int main(void)
 {
     bsp_init();
@@ -221,9 +305,13 @@ int main(void)
     //deque_test();
     //queue_test();
     //stack_test();
-    slist_test();
+    //slist_test();
+    //list_test();
+    //hashtable_test();
+    hashset_test();
     while(1)
     {
         ;
     }
 }
+

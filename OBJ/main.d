@@ -49,3 +49,5 @@
 ..\obj\main.o: ..\collect\include\stack.h
 ..\obj\main.o: ..\collect\include\slist.h
 ..\obj\main.o: ..\collect\include\list.h
+..\obj\main.o: ..\collect\include\hashtable.h
+..\obj\main.o: ..\collect\include\hashset.h

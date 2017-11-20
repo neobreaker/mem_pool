@@ -20,8 +20,7 @@
 
 #include "hashset.h"
 
-struct hashset_s
-{
+struct hashset_s {
     HashTable *table;
     int       *dummy;
 
@@ -71,16 +70,15 @@ enum cc_stat hashset_new(HashSet **hs)
 enum cc_stat hashset_new_conf(HashSetConf const * const conf, HashSet **hs)
 {
     HashSet *set = conf->mem_calloc(1, sizeof(HashSet));
-    HashTable *table = NULL;
-    enum cc_stat stat;
-
+		HashTable *table = NULL;
+		enum cc_stat stat;
+	
     if (!set)
         return CC_ERR_ALLOC;
 
     stat = hashtable_new_conf(conf, &table);
 
-    if (stat != CC_OK)
-    {
+    if (stat != CC_OK) {
         conf->mem_free(set);
         return stat;
     }
