@@ -51,3 +51,5 @@
 ..\obj\main.o: ..\collect\include\list.h
 ..\obj\main.o: ..\collect\include\hashtable.h
 ..\obj\main.o: ..\collect\include\hashset.h
+..\obj\main.o: ..\collect\include\treetable.h
+..\obj\main.o: ..\collect\include\treeset.h

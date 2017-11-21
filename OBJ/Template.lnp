@@ -37,6 +37,8 @@
 "..\obj\list.o"
 "..\obj\hashtable.o"
 "..\obj\hashset.o"
+"..\obj\treetable.o"
+"..\obj\treeset.o"
 "..\obj\ccdebug_core.o"
 "..\obj\ccdebug_port.o"
 "..\obj\iic_port.o"

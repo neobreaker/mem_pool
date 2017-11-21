@@ -51,3 +51,24 @@ int cc_common_cmp_ptr(const void *ptr1, const void *ptr2)
         return 1;
     return 0;
 }
+
+/**
+ * Reference comparator function.
+ *
+ * @param[in] k1 first pointer
+ * @param[in] k2 second pointer
+ *
+ * @return
+ */
+int cc_common_cmp_ref(const void *k1, const void *k2)
+{
+    int a = *((int*) k1);
+    int b = *((int*) k2);
+
+    if (a < b)
+        return -1;
+    else if (a > b)
+        return 1;
+    else
+        return 0;
+}

@@ -1,0 +1,9 @@
+..\obj\treeset.o: ..\collect\treeset.c
+..\obj\treeset.o: ..\collect\include\treeset.h
+..\obj\treeset.o: ..\collect\include\common.h
+..\obj\treeset.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+..\obj\treeset.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\obj\treeset.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+..\obj\treeset.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+..\obj\treeset.o: ..\mem\lib_mem.h
+..\obj\treeset.o: ..\collect\include\treetable.h

@@ -20,8 +20,7 @@
 
 #include "treeset.h"
 
-struct treeset_s
-{
+struct treeset_s {
     TreeTable *t;
     int       *dummy;
 
@@ -72,8 +71,8 @@ enum cc_stat treeset_new(int (*cmp) (const void*, const void*), TreeSet **set)
  */
 enum cc_stat treeset_new_conf(TreeSetConf const * const conf, TreeSet **tset)
 {
-    TreeTable *table = NULL;
-    enum cc_stat s;
+	    TreeTable *table = NULL;
+	enum cc_stat s;
     TreeSet *set = conf->mem_calloc(1, sizeof(TreeSet));
 
     if (!set)
@@ -81,8 +80,7 @@ enum cc_stat treeset_new_conf(TreeSetConf const * const conf, TreeSet **tset)
 
     s = treetable_new_conf(conf, &table);
 
-    if (s != CC_OK)
-    {
+    if (s != CC_OK) {
         conf->mem_free(set);
         return s;
     }
@@ -305,4 +303,3 @@ enum cc_stat treeset_iter_remove(TreeSetIter *iter, void **out)
 {
     return treetable_iter_remove(&(iter->i), out);
 }
-

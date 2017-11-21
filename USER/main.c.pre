@@ -12,6 +12,8 @@
 #include "list.h"
 #include "hashtable.h"
 #include "hashset.h"
+#include "treetable.h"
+#include "treeset.h"
 
 //__align(4) char membase[MEM_MAX_SIZE];
 
@@ -276,7 +278,7 @@ void hashtable_test()
 void hashset_test()
 {
     size_t i = 0;
-    char* pk = NULL;
+    char* pk = NULL;        //dummy
     char* key[] = {"zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"};
 
     HashSet* hashset;
@@ -288,12 +290,57 @@ void hashset_test()
         hashset_add(hashset, (void *) key[i]);
     }
 
-	if(hashset_contains(hashset, (void *)key[5]))
-	{
-		hashset_remove(hashset, (void *)key[5], (void * *)&pk);
-	}
+    if(hashset_contains(hashset, (void *)key[5]))
+    {
+        hashset_remove(hashset, (void *)key[5], (void *)&pk);
+    }
 
     hashset_destroy(hashset);
+}
+
+void treetable_test()
+{
+    size_t i = 0;
+    int *pv = NULL;
+    char* key[] = {"zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"};
+    int val[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    TreeTable *treetbl = NULL;
+
+    treetable_new(cc_common_cmp_ref, &treetbl);
+
+    for(i = 0; i < sizeof(key)/ sizeof(char*); i++)
+    {
+        treetable_add(treetbl, (void *)key[i], (void *)&val[i]);
+    }
+
+    for(i = 0; i < sizeof(key)/ sizeof(char*); i++)
+    {
+        treetable_get(treetbl, (void *)key[i], (void*)&pv);
+    }
+
+    treetable_destroy(treetbl);
+}
+
+void treeset_test()
+{
+    size_t i = 0;
+    int *pv = NULL;		//dummy
+    char* key[] = {"zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"};
+    TreeSet *treeset = NULL;
+
+    treeset_new(cc_common_cmp_ref, &treeset);
+
+    for(i = 0; i < sizeof(key)/ sizeof(char*); i++)
+    {
+        treeset_add(treeset, (void*)key[i]);
+    }
+
+    if(treeset_contains(treeset, (void*)key[0]))
+    {
+		treeset_remove(treeset, (void*)key[0], (void*)&pv);
+    }
+
+    treeset_destroy(treeset);
 }
 
 int main(void)
@@ -308,7 +355,9 @@ int main(void)
     //slist_test();
     //list_test();
     //hashtable_test();
-    hashset_test();
+    //hashset_test();
+    //treetable_test();
+    treeset_test();
     while(1)
     {
         ;
